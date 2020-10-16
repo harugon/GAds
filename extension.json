@@ -1,0 +1,53 @@
+{
+  "name": "GAds",
+  "version": "1.0.0",
+  "author": [
+    "harugon"
+  ],
+  "url": "",
+  "descriptionmsg": "gads-desc",
+  "license-name": "MIT",
+  "type": "other",
+  "requires": {
+    "MediaWiki": ">= 1.34.0"
+  },
+  "MessagesDirs": {
+    "GAds": [
+      "i18n"
+    ]
+  },
+  "AutoloadClasses": {
+    "GAds\\GAdsHooks": "includes/GAdsHooks.php"
+  },
+  "Hooks": {
+    "ParserFirstCallInit": "GAds\\GAdsHooks::onParserFirstCallInit",
+    "SkinAfterBottomScripts": "GAds\\GAdsHooks::onSkinAfterBottomScripts",
+    "ArticleViewHeader": "GAds\\GAdsHooks::onArticleViewHeader",
+    "ArticleViewFooter": "GAds\\GAdsHooks::onArticleViewFooter",
+    "SkinBuildSidebar": "GAds\\GAdsHooks::onSkinBuildSidebar"
+  },
+  "config": {
+    "GAdsClient": {
+      "value": "",
+      "description": "Google Adsense ID (\"ca-pub-XXXXXXXXXXXXX\")"
+    },
+    "GAdsDisablePages": {
+      "value": ["Main_Page"],
+      "description": "Array with page names (see magic word {{FULLPAGENAME}}) where Google Adsense code should NOT be included."
+    },
+    "GAdsNsID": {
+      "value":[0],
+      "description": "Array with NUMERIC namespace IDs where Google Adsense code should included."
+    },
+    "GAdsTag": {
+      "value": true,
+      "description": "Disable GAds Tag extensions"
+    }
+  },
+  "GroupPermissions": {
+    "bot": {
+      "nogads": true
+    }
+  },
+  "manifest_version": 2
+}
