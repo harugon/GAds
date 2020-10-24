@@ -146,6 +146,7 @@ TAG;
                 [
                     'id'=>'gads-header',
                     'class'=>'gads',
+                    'style'=>'margin:1rem;text-align:center;'
                 ],$gads_header
             );
 
@@ -168,6 +169,7 @@ TAG;
                 [
                     'id'=>'gads-footer',
                     'class'=>'gads',
+                    'style'=>'margin:1rem;text-align:center;'
                 ],$gads_footer
             );
 

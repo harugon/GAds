@@ -29,7 +29,9 @@ wfLoadExtension( 'GAds' );
 $wgGAdsClient = "";// ca-pub-123456789012345
 ```
 
-記事のフッターに広告を追加したい場合生成したコードを下記のようにLocalSettings.php追加してください
+記事のフッターに広告を追加したい場合生成したコードを下記のようにLocalSettings.php追加してください。
+
+レスポンシブ広告をおすすめします　[レスポンシブ広告のタグパラメータの使用方法 \- AdSense ヘルプ](https://support.google.com/adsense/answer/9183460?hl=ja)
 ```php
 $wgGAdsFooter = <<<TXT
 <ins class="adsbygoogle"

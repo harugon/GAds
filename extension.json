@@ -24,15 +24,6 @@
     "ArticleViewHeader": "GAds\\Hooks::onArticleViewHeader",
     "ArticleViewFooter": "GAds\\Hooks::onArticleViewFooter"
   },
-  "ResourceModules": {
-    "ext.gads": {
-      "styles": [
-        "resources/gads.css"
-      ],
-      "targets": [ "desktop", "mobile" ],
-      "position": "bottom"
-    }
-  },
   "config": {
     "GAdsClient": {
       "value": "",
