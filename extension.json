@@ -17,14 +17,21 @@
     ]
   },
   "AutoloadClasses": {
-    "GAds\\GAdsHooks": "includes/GAdsHooks.php"
+    "GAds\\Hooks": "includes/Hooks.php"
   },
   "Hooks": {
-    "ParserFirstCallInit": "GAds\\GAdsHooks::onParserFirstCallInit",
-    "SkinAfterBottomScripts": "GAds\\GAdsHooks::onSkinAfterBottomScripts",
-    "ArticleViewHeader": "GAds\\GAdsHooks::onArticleViewHeader",
-    "ArticleViewFooter": "GAds\\GAdsHooks::onArticleViewFooter",
-    "SkinBuildSidebar": "GAds\\GAdsHooks::onSkinBuildSidebar"
+    "SkinAfterBottomScripts": "GAds\\Hooks::onSkinAfterBottomScripts",
+    "ArticleViewHeader": "GAds\\Hooks::onArticleViewHeader",
+    "ArticleViewFooter": "GAds\\Hooks::onArticleViewFooter"
+  },
+  "ResourceModules": {
+    "ext.gads": {
+      "styles": [
+        "resources/gads.css"
+      ],
+      "targets": [ "desktop", "mobile" ],
+      "position": "bottom"
+    }
   },
   "config": {
     "GAdsClient": {
@@ -35,13 +42,29 @@
       "value": ["Main_Page"],
       "description": "Array with page names (see magic word {{FULLPAGENAME}}) where Google Adsense code should NOT be included."
     },
+    "GAdsActions": {
+      "value": ["view"],
+      "description": "Array with Action name where Google Adsense code should included."
+    },
     "GAdsNsID": {
       "value":[0],
       "description": "Array with NUMERIC namespace IDs where Google Adsense code should included."
     },
     "GAdsTag": {
-      "value": true,
-      "description": "Disable GAds Tag extensions"
+      "value": false,
+      "description": "GAds Tag extensions"
+    },
+    "GAdsScript": {
+      "value":"",
+      "description": "OverWrite Google Adsense Script."
+    },
+    "GAdsHeader": {
+      "value":"",
+      "description": ""
+    },
+    "GAdsFooter": {
+      "value":"",
+      "description": ""
     }
   },
   "GroupPermissions": {

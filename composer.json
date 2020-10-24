@@ -1,12 +1,18 @@
 {
   "name": "harugon/g-ads",
   "type": "mediawiki-extension",
-  "description": "Google Adsense for MediaWiki",
+  "description": "Google Adsense",
   "keywords": [
-    "MediaWiki"
+    "MediaWiki",
+    "Google Adsense"
   ],
   "license": "MIT",
   "authors": [
+    {
+      "name": "harugon",
+      "email": "info@harugon.com",
+      "role": "Developer"
+    }
   ],
   "require": {
     "php": ">=7.2",
