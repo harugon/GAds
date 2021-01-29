@@ -78,53 +78,66 @@ TXT;
      * @param $text
      * @return bool
      */
-    public static function onSkinAfterBottomScripts(\Skin $skin, &$text ) {
+    public static function onSkinAfterBottomScripts(Skin $skin, &$text ): bool
+    {
         $conf = MediaWikiServices::getInstance()->getMainConfig();
-        $gads_client = $conf->get( 'GAdsClient' );
-        $gads_disable_pages = $conf->get( 'GAdsDisablePages' );
-        $gads_namespaces = $conf->get( 'GAdsNsID' );
-        $gads_actions = $conf->get( 'GAdsActions' );
+        $GAdsClient = $conf->get( 'GAdsClient' );
+        $GAdsDisablePages = $conf->get( 'GAdsDisablePages' );
+        $GAdsNsID = $conf->get( 'GAdsNsID' );
+        $GAdsActions = $conf->get( 'GAdsActions' );
+        $GAdsSkins = $conf->get( 'GAdsSkins' );
+
+        #指定したスキンが含まれるか
+        if(!in_array( $skin->getSkinName(), $GAdsSkins, false )){
+            wfDebug($skin->getSkinName());
+            wfDebug('skin');
+            return true;
+
+        }
 
         //ユーザに指定した権限があるか
         //https://www.mediawiki.org/wiki/Manual:User_rights/ja
-        $user = $skin->getUser();
-        $action = MediaWikiServices::getInstance()->getPermissionManager()->userHasRight( $user,'nogads');
-        if($action){
+        $permission = MediaWikiServices::getInstance()->getPermissionManager()->userHasRight($skin->getUser(),'blockgads');
+        if($permission){
+            wfDebug('permission');
             return true;
+
         }
 
-        //指定した名前空間が含まれるか
+        //指定した名前空間が含まれないか
         $namespace = $skin->getTitle()->getNamespace();
-        if(!in_array($namespace,$gads_namespaces , true )){
+        if(!in_array($namespace,$GAdsNsID , true )){
             //含まれない場合表示させない
+            wfDebug('namespace');
             return true;
+
         }
 
 
         //指定したページ名が含まれるか
-        if(in_array( $skin->getTitle()->getPrefixedText(), $gads_disable_pages, false )){
+        if(in_array( $skin->getTitle()->getPrefixedText(), $GAdsDisablePages, false )){
             //含まれる場合表示させない
+            wfDebug('title');
             return true;
+
         }
 
+        //指定したアクションが含まれないか　["view"]
+        //https://www.mediawiki.org/wiki/Manual:$wgActions/ja
         $context = $skin->getContext();
         $action = Action::getActionName($context);
-        //指定したアクションが含まれるか　["view"]
-        //https://www.mediawiki.org/wiki/Manual:$wgActions/ja
-        if(!in_array( $action, $gads_actions, false )){
+        if(!in_array( $action, $GAdsActions, false )){
             //含まれない場合表示させない
+            wfDebug('actions');
             return true;
+
         }
-
-        $skin->getContext()->getOutput()->addModules('ext.gads');
-
-
 
         //広告スクリプトタグ
         $text.= <<<TAG
-<script data-ad-client="{$gads_client}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script data-ad-client="{$GAdsClient}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 TAG;
-
+        wfDebug('tag');
         return true;
 
     }
@@ -139,15 +152,14 @@ TAG;
      */
     public static function onArticleViewHeader( &$article, &$outputDone, &$pcache ) {
         $conf = MediaWikiServices::getInstance()->getMainConfig();
-        $gads_header = $conf->get( 'GAdsHeader' );
-        if(!$gads_header == ''){
+        $GAdsHeader = $conf->get( 'GAdsHeader' );
+        if(!$GAdsHeader === ''){
             $html = Html::rawelement(
                 'div',
                 [
                     'id'=>'gads-header',
-                    'class'=>'gads',
-                    'style'=>'margin:1rem;text-align:center;'
-                ],$gads_header
+                    'class'=>'gads'
+                ],$GAdsHeader
             );
 
             $article->getContext()->getOutput()->addHTML($html);
@@ -162,20 +174,17 @@ TAG;
      */
     public static function onArticleViewFooter( $article ) {
         $conf = MediaWikiServices::getInstance()->getMainConfig();
-        $gads_footer = $conf->get( 'GAdsFooter' );
-        if(!$gads_footer == ''){
+        $GAdsFooter = $conf->get( 'GAdsFooter' );
+        if(!$GAdsFooter === ''){
             $html = Html::rawelement(
                 'div',
                 [
                     'id'=>'gads-footer',
-                    'class'=>'gads',
-                    'style'=>'margin:1rem;text-align:center;'
-                ],$gads_footer
+                    'class'=>'gads'
+                ],$GAdsFooter
             );
-
             $article->getContext()->getOutput()->addHTML($html);
         }
-
     }
 
 }

@@ -1,0 +1,45 @@
+name: MediaWiki Extension
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - 'i18n/**'
+      - '.github/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: MySQL
+        run: |
+          sudo systemctl start mysql.service
+          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS mediawiki;'
+      - name: Setup PHP 7.4
+        run: sudo update-alternatives --set php /usr/bin/php7.4
+      - name: MediaWiki
+        uses: actions/checkout@v2
+        with:
+          repository: wikimedia/mediawiki
+          ref: REL1_35
+          path: ./w
+      - name: MediaWik install
+        run: |
+          sudo composer self-update 1.10.16
+          composer install --prefer-dist --no-progress --no-suggest
+          php maintenance/install.php --dbname=mediawiki --dbserver="127.0.0.1" --dbuser=root --dbpass=root --lang=ja --pass=7M3p8JZMhm "Wiki Name" "Admin"
+        working-directory: ./w
+      - name: Extenion
+        uses: actions/checkout@v2
+        with:
+          path: ./w/extensions/GAds
+      - name: Extension install
+        run: |
+          composer install
+        working-directory: ./w/extensions/GAds
+      - name: LocalSettings install
+        run: |
+          echo 'wfLoadExtension( "GAds" );' >> LocalSettings.php
+        working-directory: ./w
+      - name: Test
+        run: php tests/phpunit/phpunit.php extensions/GAds/tests/
+        working-directory: ./w
+    # Add a test script to composer.json, for ins

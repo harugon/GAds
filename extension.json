@@ -1,10 +1,10 @@
 {
   "name": "GAds",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": [
     "harugon"
   ],
-  "url": "",
+  "url": "https://github.com/harugon/GAds",
   "descriptionmsg": "gads-desc",
   "license-name": "MIT",
   "type": "other",
@@ -33,6 +33,10 @@
       "value": ["Main_Page"],
       "description": "Array with page names (see magic word {{FULLPAGENAME}}) where Google Adsense code should NOT be included."
     },
+    "GAdsSkins": {
+      "value": ["minerva"],
+      "description": "Array with Skin name where Google Adsense code should included."
+    },
     "GAdsActions": {
       "value": ["view"],
       "description": "Array with Action name where Google Adsense code should included."
@@ -60,8 +64,9 @@
   },
   "GroupPermissions": {
     "bot": {
-      "nogads": true
-    }
+      "blockgads": true
+    },
+    "AvailableRights": ["blockgads"]
   },
   "manifest_version": 2
 }
