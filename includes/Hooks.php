@@ -89,28 +89,21 @@ TXT;
 
         #指定したスキンが含まれるか
         if(!in_array( $skin->getSkinName(), $GAdsSkins, false )){
-            wfDebug($skin->getSkinName());
-            wfDebug('skin');
             return true;
-
         }
 
         //ユーザに指定した権限があるか
         //https://www.mediawiki.org/wiki/Manual:User_rights/ja
         $permission = MediaWikiServices::getInstance()->getPermissionManager()->userHasRight($skin->getUser(),'blockgads');
         if($permission){
-            wfDebug('permission');
             return true;
-
         }
 
         //指定した名前空間が含まれないか
         $namespace = $skin->getTitle()->getNamespace();
         if(!in_array($namespace,$GAdsNsID , true )){
             //含まれない場合表示させない
-            wfDebug('namespace');
             return true;
-
         }
 
 
@@ -128,18 +121,15 @@ TXT;
         $action = Action::getActionName($context);
         if(!in_array( $action, $GAdsActions, false )){
             //含まれない場合表示させない
-            wfDebug('actions');
             return true;
-
         }
 
         //広告スクリプトタグ
         $text.= <<<TAG
 <script data-ad-client="{$GAdsClient}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 TAG;
-        wfDebug('tag');
-        return true;
 
+        return true;
     }
 
 
@@ -153,7 +143,7 @@ TAG;
     public static function onArticleViewHeader( &$article, &$outputDone, &$pcache ) {
         $conf = MediaWikiServices::getInstance()->getMainConfig();
         $GAdsHeader = $conf->get( 'GAdsHeader' );
-        if(!$GAdsHeader === ''){
+        if($GAdsHeader !== ''){
             $html = Html::rawelement(
                 'div',
                 [
@@ -175,7 +165,7 @@ TAG;
     public static function onArticleViewFooter( $article ) {
         $conf = MediaWikiServices::getInstance()->getMainConfig();
         $GAdsFooter = $conf->get( 'GAdsFooter' );
-        if(!$GAdsFooter === ''){
+        if($GAdsFooter !== ''){
             $html = Html::rawelement(
                 'div',
                 [
