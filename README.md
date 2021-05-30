@@ -8,7 +8,17 @@ MediaWikiにGoogle AdSenseを追加します
 Google AdSenseを追加します、
 
 
-* 広告の表示非表示はスクリプトの読み込みをしないするで制御しています
+* 広告の表示非表示はスクリプトの読み込みで制御しています
+
+### 表示位置（例）
+
+* wgGAdsHeader 上（320×50）
+* wgGAdsFooter 下（300×250）
+
+| Minerva | Vector |
+|:------------:|:------------:|
+| ![Minerva AdSense](https://raw.githubusercontent.com/harugon/GAds/master/.github/screenshots/GAds-MinervaNeue.png)      | ![Vector AdSense](https://raw.githubusercontent.com/harugon/GAds/master/.github/screenshots/GAds-Vector.png)      |
+
 
 ## Download
 
