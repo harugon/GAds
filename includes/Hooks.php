@@ -12,69 +12,12 @@ use Skin;
 
 class Hooks
 {
-    /**
-     * called when the parser initializes for the first time
-     * https://www.mediawiki.org/wiki/Manual:Hooks/ParserFirstCallInit
-     * "ParserFirstCallInit": "GAds\\GAdsHooks::onParserFirstCallInit",
-     *
-     * @param Parser $parser
-     *
-     * @throws \MWException
-     */
-    public static function onParserFirstCallInit( Parser $parser ) {
-        $parser->setHook( 'ins', [ self::class, 'renderTagGAds' ] );
-    }
-
-    /**
-     * ins タグを返す
-     *
-     * @param $input
-     * @param array $args
-     * @param Parser $parser
-     * @param PPFrame $frame
-     * @return string
-     */
-    public static function renderTagGAds( $input, array $args, Parser $parser, PPFrame $frame ) {
-
-        $conf =  MediaWikiServices::getInstance()->getMainConfig();
-        $gads_client = $conf->get( 'GAdsClient' );
-        //data-ad-client 上書き
-        $args['data-ad-client'] = $gads_client;
-
-        $param_list = [
-            "class", // class
-            "style", // style
-            "data-ad-client", //ユーザID
-            "data-adtest",
-            "data-ad-slot", //広告ID
-            "data-ad-format", //形状（横長、縦長、レクタングル）
-            "data-full-width-responsive" //レスポンシブ広告ユニットが全幅サイズに自動拡張
-        ];
-
-        $attribute = array_filter($args, function($v, $k) use ($param_list) {
-            return in_array($k,$param_list, true);
-        }, ARRAY_FILTER_USE_BOTH);
-
-
-        $tag = Html::rawelement(
-            'ins',
-            $attribute,""
-        );
-
-        return $tag.<<<TXT
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-TXT;
-
-    }
-
 
     /**
      * At the end of Skin::bottomScripts()
      * https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterBottomScripts
      *
-     * @param $skin
+     * @param Skin $skin
      * @param $text
      * @return bool
      */
@@ -110,7 +53,6 @@ TXT;
         //指定したページ名が含まれるか
         if(in_array( $skin->getTitle()->getPrefixedText(), $GAdsDisablePages, false )){
             //含まれる場合表示させない
-            wfDebug('title');
             return true;
 
         }
