@@ -1,4 +1,6 @@
 {
   "gads-desc": "Google adsenseを追加します",
-  "right-blockgads": "GAdsを非表示にします"
+  "right-blockgads": "GAdsを非表示にします",
+  "gads-header-label": "広告",
+  "gads-footer-label": "広告"
 }

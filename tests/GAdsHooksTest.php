@@ -3,6 +3,8 @@
 
 namespace GAds\Test;
 
+use Article;
+use OutputPage;
 use RequestContext;
 use Title;
 use GAds\Hooks;
@@ -11,6 +13,7 @@ use GAds;
 class GAdsHooksTest extends \MediaWikiTestCase
 {
     private $skin;
+    private $out;
 
     protected function setUp() : void {
         parent::setUp();
@@ -22,24 +25,25 @@ class GAdsHooksTest extends \MediaWikiTestCase
         $context->setUser($user);
         $this->skin = new \SkinTemplate();
         $this->skin->skinname="vector";
-        $this->skin->setContext( $context );
+        $this->skin->setContext($context);
     }
 
 
     /**
      * @dataProvider configProvider
+     * @throws \MWException
      */
-    public function testOnSkinAfterBottomScripts($RegExp,$config){
+    public function testOnBeforePageDisplay($hasItem,$config){
         $this->setMwGlobals($config);
-        $text = "";
-        Hooks::onSkinAfterBottomScripts($this->skin,$text);
-        $this->assertRegExp($RegExp,$text);
+        $out=new OutputPage($this->skin->getContext());
+        Hooks::onBeforePageDisplay($out,$this->skin);
+        $this->assertEquals($out->hasHeadItem('adsense'),$hasItem);
     }
 
     public function configProvider(){
         return [
             //表示される
-            [ "/ca-pub-123456789012345/",  [
+            [ true,  [
                 'wgGAdsClient' => "ca-pub-123456789012345",
                 'wgGAdsDisablePages' => [""],
                 'wgGAdsNsID' => [0,1],
@@ -47,7 +51,7 @@ class GAdsHooksTest extends \MediaWikiTestCase
                 'wgGAdsSkins' => ["vector"],
             ]  ],
             //権限あるので表示されない
-            [ "/^$/", [
+            [ false, [
                 'wgGAdsClient' => "ca-pub-123456789012345",
                 'wgGAdsDisablePages' => [""],
                 'wgGAdsNsID' => [0,1],
@@ -58,7 +62,7 @@ class GAdsHooksTest extends \MediaWikiTestCase
                     ],
             ]  ],
             //page　表示されない
-            [ "/^$/", [
+            [ false, [
                 'wgGAdsClient' => "ca-pub-123456789012345",
                 'wgGAdsDisablePages' => ["MAIN"],
                 'wgGAdsNsID' => [0,1],
@@ -66,7 +70,7 @@ class GAdsHooksTest extends \MediaWikiTestCase
                 'wgGAdsSkins' => ["vector"],
             ]  ],
             //namespace　表示されない
-            ["/^$/", [
+            [false, [
                 'wgGAdsClient' => "ca-pub-123456789012345",
                 'wgGAdsDisablePages' => [""],
                 'wgGAdsNsID' => [1],
@@ -74,7 +78,7 @@ class GAdsHooksTest extends \MediaWikiTestCase
                 'wgGAdsSkins' => ["vector"],
             ]  ],
             //action　表示されない
-            [ "/^$/", [
+            [ false, [
                 'wgGAdsClient' => "ca-pub-123456789012345",
                 'wgGAdsDisablePages' => [""],
                 'wgGAdsNsID' => [0,1],
@@ -82,7 +86,7 @@ class GAdsHooksTest extends \MediaWikiTestCase
                 'wgGAdsSkins' => ["vector"],
             ]  ],
             //Skin　表示されない
-            [ "/^$/", [
+            [ false, [
                 'wgGAdsClient' => "ca-pub-123456789012345",
                 'wgGAdsDisablePages' => [""],
                 'wgGAdsNsID' => [0,1],

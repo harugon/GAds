@@ -20,9 +20,20 @@
     "GAds\\Hooks": "includes/Hooks.php"
   },
   "Hooks": {
-    "SkinAfterBottomScripts": "GAds\\Hooks::onSkinAfterBottomScripts",
+    "BeforePageDisplay": "GAds\\Hooks::onBeforePageDisplay",
     "ArticleViewHeader": "GAds\\Hooks::onArticleViewHeader",
     "ArticleViewFooter": "GAds\\Hooks::onArticleViewFooter"
+  },
+  "ResourceModules": {
+    "ext.gads.styles": {
+      "styles": [
+        "resources/ext.gads.css"
+      ]
+    }
+  },
+  "ResourceFileModulePaths": {
+    "localBasePath": "",
+    "remoteExtPath": "GAds"
   },
   "config": {
     "GAdsClient": {

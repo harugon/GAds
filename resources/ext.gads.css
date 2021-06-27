@@ -1,0 +1,17 @@
+#gads_header{
+    width: 100%;
+    margin: 1em auto;
+}
+#gads-footer{
+    width: 100%;
+    margin: 1em auto;
+}
+
+.gads-label{
+    color: #AAAAAA;
+}
+
+/* 印刷では非表示 */
+@media print {
+    .gads { diaply: none; }
+}
